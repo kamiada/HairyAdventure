@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
 
         }
         else { climb = false; }
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
 
     private void FixedUpdate()
