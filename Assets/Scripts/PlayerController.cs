@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     bool left = false;
     float xDirection = 0f;
     float yDirection = 0f;
-    bool facingRight;
     bool isGrounded = true;
 
     [SerializeField] StaminaBarScript _staminaBar;
@@ -24,14 +23,9 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        facingRight = true;
     }
     void Update()
     {
-        animator.SetBool("climb", climb);
-        animator.SetBool("isGrounded", isGrounded);
-        animator.SetBool("left", left);
-        animator.SetBool("right", right);
         if (Input.GetKey(KeyCode.Space))
         {
             climb = true;
@@ -54,6 +48,10 @@ public class PlayerController : MonoBehaviour
         {
             _rb.gravityScale = 2;
         }
+        animator.SetBool("climb", climb);
+        animator.SetBool("isGrounded", isGrounded);
+        animator.SetBool("left", left);
+        animator.SetBool("right", right);
     }
 
     private void MovementLeftRight()
@@ -76,15 +74,7 @@ public class PlayerController : MonoBehaviour
         {
             _rb.velocity = new Vector2(0, _rb.velocity.y);
         }
-        if (xDirection < 0 && facingRight)
-        {
-            Flipping();
 
-        }
-        if (xDirection > 0 && !facingRight)
-        {
-            Flipping();
-        }
     }
 
     private void Climb()
@@ -106,11 +96,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void Flipping()
-    {
-        facingRight = !facingRight;
-        transform.Rotate(Vector3.up * 180);
-    }
 
     private void PlayerLoosesStamina(int loss) {
         GameManager._gameManager._playerStamina.LoseStamina(loss);
