@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     float xDirection = 0f;
     float yDirection = 0f;
     bool facingRight;
-    bool isGrounded = false;
+    bool isGrounded = true;
 
     [SerializeField] StaminaBarScript _staminaBar;
 
@@ -28,6 +28,10 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        animator.SetBool("climb", climb);
+        animator.SetBool("isGrounded", isGrounded);
+        animator.SetBool("left", left);
+        animator.SetBool("right", right);
         if (Input.GetKey(KeyCode.Space))
         {
             climb = true;
@@ -36,10 +40,6 @@ public class PlayerController : MonoBehaviour
         else { climb = false; }
 
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-        animator.SetBool("climb", climb);
-        animator.SetBool("isGrounded", isGrounded);
-        animator.SetBool("left", left);
-        animator.SetBool("right", right);
     }
 
     private void FixedUpdate()
@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
             _rb.velocity = new Vector2(xDirection * _speed, _rb.velocity.y);
             right = false;
             left = true;
+
         }
         else if (xDirection < 0f)
         {
