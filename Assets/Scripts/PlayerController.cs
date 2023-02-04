@@ -96,10 +96,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.up * 180);
     }
 
-    /// <summary>
-    /// Used for animation. Triggers different animations styles depending if
-    /// player climbs or walks left to right
-    /// </summary>
+
     public void CheckInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
@@ -122,8 +119,7 @@ public class PlayerController : MonoBehaviour
     }
     private void PlayerLoosesStamina(int loss) {
         GameManager._gameManager._playerStamina.LoseStamina(loss);
-        Debug.Log(GameManager._gameManager._playerStamina.CurrentStamina);
-        //_staminaBar.SetStamina(GameManager.gameManager._playerStamina.CurrentStamina);
+        _staminaBar.SetStamina(GameManager._gameManager._playerStamina.CurrentStamina);
     }
 
 
