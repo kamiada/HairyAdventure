@@ -4,23 +4,87 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveForce = 5;
-    Rigidbody2D rb;
-    Vector2 move;
+    public float _speed = 5f;
+    Rigidbody2D _rb;
+    Vector2 _playerInputAxisX;
+    Vector2 _playerInputAxisY;
     SpriteRenderer spriteRenderer;
     internal Animator animator;
+    bool climb = false;
+    float xDirection = 0f;
+    float yDirection = 0f;
+    bool facingRight;
 
 
     public Collider2D collider2d;
-    // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        facingRight = true;
     }
-
-    // Update is called once per frame
     void Update()
     {
-        rb.AddForce(Input.GetAxis("Horizontal") * moveForce * transform.right, ForceMode2D.Force);
+        if (Input.GetKey(KeyCode.Space))
+        {
+            climb = true;
+            
+        } else { climb = false; }
     }
+
+    private void FixedUpdate()
+    {
+        MovementLeftRight();
+        if (climb)
+        {
+            Climb();
+        }
+    }
+
+    private void MovementLeftRight() {
+        xDirection = Input.GetAxis("Horizontal");
+        if (xDirection > 0f)
+        {
+            _rb.velocity = new Vector2(xDirection * _speed, _rb.velocity.y);
+        }
+        else if (xDirection < 0f)
+        {
+            _rb.velocity = new Vector2(xDirection * _speed, _rb.velocity.y);
+        }
+        else
+        {
+            _rb.velocity = new Vector2(0, _rb.velocity.y);
+        }
+        if (xDirection < 0 && facingRight)
+        {
+            Flipping();
+
+        }
+        if (xDirection > 0 && !facingRight)
+        {
+            Flipping();
+        }
+    }
+
+    private void Climb()
+    {
+        yDirection = Input.GetAxis("Vertical");
+        if (yDirection > 0f)
+        {
+            //_rb.velocity = new Vector2(Input.GetAxis("Vertical") * _speed, _rb.velocity.x);
+            _rb.velocity = new Vector2(0, Mathf.Lerp(0, yDirection * _speed, 0.8f));
+        }
+        else if (yDirection < 0f)
+        {
+            //_rb.velocity = new Vector2(Input.GetAxis("Vertical") * _speed, _rb.velocity.x);
+            _rb.velocity = new Vector2(0, Mathf.Lerp(0, yDirection * _speed, 0.8f));
+        }
+    }
+
+    public void Flipping()
+    {
+        facingRight = !facingRight;
+        transform.Rotate(Vector3.up * 180);
+    }
+
+
 }

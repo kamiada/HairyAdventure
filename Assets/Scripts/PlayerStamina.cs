@@ -2,17 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStamina : MonoBehaviour
+public class PlayerStamina
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    int _currentStamina;
+    int _maxStamina;
+
+    public int CurrentStamind {
+       get
+        {
+            return _currentStamina;
+        }
+        set {
+            _currentStamina = value;
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public int MaxStamina {
+        get
+        {
+            return _maxStamina;
+        }
+        set
+        {
+            _maxStamina = value;
+        }
     }
+
 }
