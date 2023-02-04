@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer spriteRenderer;
     public Animator animator;
     bool climb = false;
-    bool right = false;
-    bool left = false;
     float xDirection = 0f;
     float yDirection = 0f;
     bool isGrounded = true;
@@ -26,6 +24,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        CheckInput();
         if (Input.GetKey(KeyCode.Space))
         {
             climb = true;
@@ -48,10 +47,6 @@ public class PlayerController : MonoBehaviour
         {
             _rb.gravityScale = 2;
         }
-        animator.SetBool("climb", climb);
-        animator.SetBool("isGrounded", isGrounded);
-        animator.SetBool("left", left);
-        animator.SetBool("right", right);
     }
 
     private void MovementLeftRight()
@@ -60,15 +55,12 @@ public class PlayerController : MonoBehaviour
         if (xDirection > 0f)
         {
             _rb.velocity = new Vector2(xDirection * _speed, _rb.velocity.y);
-            right = false;
-            left = true;
-
+            //transform.Translate(Vector2.right * _speed * Time.deltaTime);
         }
-        else if (xDirection < 0f)
+        else if (xDirection < 0f && Input.GetKey(KeyCode.LeftArrow))
         {
             _rb.velocity = new Vector2(xDirection * _speed, _rb.velocity.y);
-            left = false;
-            right = true;
+            //transform.Translate(Vector2.left * _speed * Time.deltaTime);
         }
         else
         {
@@ -83,12 +75,14 @@ public class PlayerController : MonoBehaviour
         if (yDirection > 0f)
         {
             _rb.velocity = new Vector2(0, yDirection * _speed * Time.deltaTime);
+            //transform.Translate(Vector2.up * _speed * Time.deltaTime);
             PlayerLoosesStamina(1);
             climb = true;
         }
         else if (yDirection < 0f)
         {
             _rb.velocity = new Vector2(0, yDirection * _speed * Time.deltaTime);
+            //transform.Translate(Vector2.down * _speed * Time.deltaTime);
             PlayerLoosesStamina(1);
             climb = true;
 
@@ -108,6 +102,11 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
+
+        if(col.gameObject.tag == "Tick")
+        {
+            Debug.Log("here");
+        }
     }
 
     void OnCollisionExit2D(Collision2D col)
@@ -116,5 +115,25 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+    public void CheckInput()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            animator.SetTrigger("Climb");
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            animator.SetTrigger("Climb");
+        }
+        else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            animator.SetTrigger("WalkRight");
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            animator.SetTrigger("WalkLeft");
+        }
+
     }
 }
