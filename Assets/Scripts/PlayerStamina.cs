@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStamina
 {
     int _currentStamina;
-    int _maxStamina;
 
-    public int CurrentStamind {
+    public int CurrentStamina {
        get
         {
             return _currentStamina;
@@ -18,15 +18,22 @@ public class PlayerStamina
 
     }
 
-    public int MaxStamina {
-        get
-        {
-            return _maxStamina;
-        }
-        set
-        {
-            _maxStamina = value;
-        }
+    public PlayerStamina (int stamina)
+    {
+        _currentStamina = stamina;
     }
 
+    public void LoseStamina (int damage)
+    {
+        if( _currentStamina > 0) {
+            _currentStamina -= damage;
+        }
+        if( _currentStamina == 0 || _currentStamina < 0) {
+            LoadScene("GameOver");
+        }
+    }
+    public void LoadScene(string SceneName)
+    {
+        SceneManager.LoadScene(SceneName);
+    }
 }

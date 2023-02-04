@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float _speed = 5f;
+    public float _speed = 3.0f;
     Rigidbody2D _rb;
-    Vector2 _playerInputAxisX;
-    Vector2 _playerInputAxisY;
     SpriteRenderer spriteRenderer;
     internal Animator animator;
     bool climb = false;
     float xDirection = 0f;
     float yDirection = 0f;
     bool facingRight;
+    Sprite ClimbingSprite;
+
+    [SerializeField] StaminaBarScript _staminaBar;
 
 
     public Collider2D collider2d;
@@ -27,8 +28,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             climb = true;
-            
-        } else { climb = false; }
+
+        }
+        else { climb = false; }
     }
 
     private void FixedUpdate()
@@ -36,11 +38,17 @@ public class PlayerController : MonoBehaviour
         MovementLeftRight();
         if (climb)
         {
+            _rb.gravityScale = 0;
             Climb();
+        }
+        else
+        {
+            _rb.gravityScale = 2;
         }
     }
 
-    private void MovementLeftRight() {
+    private void MovementLeftRight()
+    {
         xDirection = Input.GetAxis("Horizontal");
         if (xDirection > 0f)
         {
@@ -70,20 +78,49 @@ public class PlayerController : MonoBehaviour
         yDirection = Input.GetAxis("Vertical");
         if (yDirection > 0f)
         {
-            //_rb.velocity = new Vector2(Input.GetAxis("Vertical") * _speed, _rb.velocity.x);
-            _rb.velocity = new Vector2(0, Mathf.Lerp(0, yDirection * _speed, 0.8f));
+            _rb.velocity = new Vector2(0, yDirection * _speed * Time.deltaTime);
+            PlayerLoosesStamina(1);
         }
         else if (yDirection < 0f)
         {
-            //_rb.velocity = new Vector2(Input.GetAxis("Vertical") * _speed, _rb.velocity.x);
-            _rb.velocity = new Vector2(0, Mathf.Lerp(0, yDirection * _speed, 0.8f));
+            _rb.velocity = new Vector2(0, yDirection * _speed * Time.deltaTime);
         }
+
     }
 
     public void Flipping()
     {
         facingRight = !facingRight;
         transform.Rotate(Vector3.up * 180);
+    }
+
+    /// <summary>
+    /// Used for animation. Triggers different animations styles depending if
+    /// player climbs or walks left to right
+    /// </summary>
+    public void CheckInput()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            animator.SetTrigger("Up");
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            animator.SetTrigger("Down");
+        }
+        else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            animator.SetTrigger("Right");
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            animator.SetTrigger("Left");
+        }
+
+    }
+    private void PlayerLoosesStamina(int loss) {
+        GameManager.gameManager._playerStamina.LoseStamina(loss);
+        _staminaBar.SetStamina(GameManager.gameManager._playerStamina.CurrentStamina);
     }
 
 
