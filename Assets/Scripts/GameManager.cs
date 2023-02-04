@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-   public static GameManager gameManager { get; private set; }
+   public static GameManager _gameManager { get; private set; }
 
     public PlayerStamina _playerStamina = new PlayerStamina(100);
-
     void Awake()
     {
-        if (gameManager != null && gameManager != this) {
+        if (_gameManager != null && _gameManager != this) {
             Destroy(this);
-        }   else { gameManager = this; }
+        }   else { _gameManager = this; }
     }
 }

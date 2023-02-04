@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
         {
             _rb.gravityScale = 2;
         }
+        Debug.Log(GameManager._gameManager._playerStamina.CurrentStamina);
+
     }
 
     private void MovementLeftRight()
@@ -119,8 +121,9 @@ public class PlayerController : MonoBehaviour
 
     }
     private void PlayerLoosesStamina(int loss) {
-        GameManager.gameManager._playerStamina.LoseStamina(loss);
-        _staminaBar.SetStamina(GameManager.gameManager._playerStamina.CurrentStamina);
+        GameManager._gameManager._playerStamina.LoseStamina(loss);
+        Debug.Log(GameManager._gameManager._playerStamina.CurrentStamina);
+        //_staminaBar.SetStamina(GameManager.gameManager._playerStamina.CurrentStamina);
     }
 
 

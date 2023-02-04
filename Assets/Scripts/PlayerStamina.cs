@@ -28,9 +28,9 @@ public class PlayerStamina
         if( _currentStamina > 0) {
             _currentStamina -= damage;
         }
-        if( _currentStamina == 0 || _currentStamina < 0) {
-            LoadScene("GameOver");
-        }
+        //if( _currentStamina == 0 || _currentStamina < 0) {
+        //    LoadScene("GameOver");
+        //}
     }
     public void LoadScene(string SceneName)
     {
