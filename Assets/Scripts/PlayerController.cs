@@ -1,41 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Platformer.Gameplay;
-using static Platformer.Core.Simulation;
-using Platformer.Model;
-using Platformer.Core;
 
-public class PlayerController : KinematicObject
+public class PlayerController : MonoBehaviour
 {
-    public float maxSpeed = 7;
+    public float moveForce = 5;
+    Rigidbody2D rb;
     Vector2 move;
     SpriteRenderer spriteRenderer;
     internal Animator animator;
-    public Stamina stamina;
-    public bool controlEnabled = true;
+
+
     public Collider2D collider2d;
-    public AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
-    protected override void Update()
+    void Update()
     {
-        if (controlEnabled)
-        {
-            move.x = Input.GetAxis("Horizontal");
-        }
-        else
-        {
-            move.x = 0;
-        }
-        base.Update();
+        rb.AddForce(Input.GetAxis("Horizontal") * moveForce * transform.right, ForceMode2D.Force);
     }
 }
