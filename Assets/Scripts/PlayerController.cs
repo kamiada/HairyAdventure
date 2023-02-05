@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     bool climb = false;
     float xDirection = 0f;
     float yDirection = 0f;
-    bool isGrounded = true;
 
     [SerializeField] StaminaBarScript _staminaBar;
 
@@ -98,10 +97,10 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Ground")
-        {
-            isGrounded = true;
-        }
+        //if (col.gameObject.tag == "Ground")
+        //{
+        //    isGrounded = true;
+        //}
 
         if(col.gameObject.tag == "Tick")
         {
@@ -110,13 +109,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnCollisionExit2D(Collision2D col)
-    {
-        if (col.gameObject.tag == "Ground")
-        {
-            isGrounded = false;
-        }
-    }
+    //void OnCollisionExit2D(Collision2D col)
+    //{
+    //    if (col.gameObject.tag == "Ground")
+    //    {
+    //        isGrounded = false;
+    //    }
+    //}
     public void CheckInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
