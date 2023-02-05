@@ -17,7 +17,7 @@ public class Menu : MonoBehaviour
 
     void TaskOnClick()
     {
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene("Intro");
     }
 }
 
