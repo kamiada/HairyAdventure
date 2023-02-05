@@ -106,6 +106,7 @@ public class PlayerController : MonoBehaviour
         if(col.gameObject.tag == "Tick")
         {
             Debug.Log("here");
+
         }
     }
 
