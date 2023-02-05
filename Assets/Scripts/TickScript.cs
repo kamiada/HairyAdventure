@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TickScript : MonoBehaviour
 {
+    [SerializeField] StaminaBarScript _staminaBar;
+
     public Animator tick_animator;
     void Start()
     {
         tick_animator = GetComponent<Animator>();
-        StartCoroutine(CheckIfAnimIsPlaying());
     }
 
-    // Update is called once per frame
     void Update()
     {
     }
@@ -23,16 +24,10 @@ public class TickScript : MonoBehaviour
         if (col.gameObject.tag == "Player")
         {
             tick_animator.SetTrigger("playerAround");
+            GameManager._gameManager._playerStamina.LoseStamina(20);
+            _staminaBar.SetStamina(GameManager._gameManager._playerStamina.CurrentStamina);
+
         }
     }
 
-    private IEnumerator CheckIfAnimIsPlaying()
-    {
-        if (tick_animator.GetCurrentAnimatorStateInfo(0).IsName("TickBlowUp"))
-        {
-            yield return new WaitForSeconds(3.0f);
-            SceneManager.LoadScene("Death");
-        }
-
-    }
 }
